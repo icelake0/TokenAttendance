@@ -9,6 +9,8 @@ use App\Child;
 use App\Subject;
 use App\User;
 use App\TeacherDocument;
+use App\Lecturer;
+use App\Student;
 class EntrustController extends Controller
 {
     public function choseRole(Request $request){
@@ -25,52 +27,58 @@ class EntrustController extends Controller
 		    $user=Auth::user();
 		    $user->attachRole($role);
 		    return redirect()->route('home')
-                 ->with('success' , 'Your role is set, you May now explore other featurs');
+                 ->with('success' , 'Your role is set, You may now add your basic info');
 		}
 		return view('entrust.choserole');
     }
+    public function addBasicInfo(Request $request){
+        $user=Auth::user();
+        if($request->isMethod('post')){
+            if($user->hasRole('lecturer')){
+                $lecturer= new Lecturer();
+                $lecturer->user_id=$user->id;
+                $lecturer->title=$request['title'];
+                $lecturer->aos=$request['aos'];
+                $lecturer->office_address=$request['office_address'];
+                if($lecturer->save()){
+                    return redirect()->route('home')->with('success' , 'Basic infomation saved, you may now explore other fetaures of the system');
+                }else{
+                    return back()->with('error','Something went wrong please try again, if you are unabe to pass this stage please contact an administrator');
+                }
+
+            }elseif($user->hasRole('student')){
+                $student= new Student();
+                $student->user_id=$user->id;
+                $student->reg_number=$request['reg_number'];
+                if($student->save()){
+                    return redirect()->route('home')->with('success' , 'Basic info saved, you may now explore other fetaures of the system');
+                }else{
+                    return back()->with('error','Something went wrong please try again, if you are unabe to pass this stage please contact an administrator');
+                }
+
+            }else{
+                return back()->with('error','What Kind of User Are You? You need to consolt a system admin');
+            }
+        }
+        if($user->hasRole('lecturer')){
+            if($user->lecturer){
+                return redirect()->back()->with('error' , 'Your have already added your basic info as lecturer');
+            }else{
+                return view('lecturers.addbasicinfo');
+            }
+            
+            
+        }elseif($user->hasRole('student')){
+            if($user->student){
+                return redirect()->back()->with('error' , 'Your have already added your basic info as student');
+            }else{
+                return view('students.addbasicinfo');
+            }
+            
+        }
+    }
     public function teacherProfileCreate(){
 
-    }
-    public function addChildren(Request $request){
-        // if(!Auth::user()->hasRole('parent')){
-        //     return back()->with('error','You can not add children because you are not a parent');
-        // }
-    	if ($request->isMethod('post')) {;
-    		$children=$request['children'];
-    		$parent_id=Auth::user()->id;
-    		foreach($children as $child){
-    			$model= new Child();
-    			$model->name=$child['name'];
-                $model->dob=$child['dob'];
-                $model->level=$child['level'];
-    			$model->parent_id=$parent_id;
-    			$model->save();
-    		}
-		    return redirect()->route('home')
-                 ->with('success' , 'Your Children Have Been Added You Can Now Request For Teahers');
-		}
-		return view('entrust.addchildren');
-    }
-    public function addSubjects(Request $request){
-    	if ($request->isMethod('post')) {
-    		$subjects=$request['subjects'];
-    		$teacher=Auth::user();
-    		foreach($subjects as $subject){
-    			$model=Subject::where('name','LIKE',$subject)->first();
-    			if(!$model){
-    				$model=new Subject();
-    				$model->name=$subject;
-    				$model->save();
-    			}
-    			//attach the subject and the teacher
-    			$teacher->subjects()->syncWithoutDetaching($model->id);
-
-    		}
-		    return redirect()->route('home')
-                 ->with('success' , 'Your Subjects Have Been Added Hope We Find Someone In Need of Your Service Soon');
-		}
-		return view('entrust.addsubjects');
     }
     public function profile(Request $request, User $user,$partial=null){
         $settings=(isset($request['settings']))?true:false;

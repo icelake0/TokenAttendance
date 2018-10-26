@@ -20,6 +20,7 @@ Route::get('auth/{provider}', 'Auth\LoginController@redirectToProvider');
 Route::get('auth/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
 Route::group(['middleware'=>['auth']], function(){
 	Route::match(['get', 'post'],'/webauth/choserole', 'EntrustController@choseRole')->name('webauth.choserole');
+	Route::match(['get', 'post'],'/webauth/addbasicinfo', 'EntrustController@addBasicInfo')->name('webauth.addbasicinfo');
 	Route::get('/getTeachers', 'EntrustController@getTeachers')->name('webauth.getTeachers');
 	Route::post('/webauth/updateavatar',[
 		'uses'=>'EntrustController@updateAvatar',

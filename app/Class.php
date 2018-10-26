@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Class extends Model
 {
     public function course(){
-    	return $this->belongsToOne('App\Course','course_id');
+    	return $this->belongsTo('App\Course','course_id');
     }
     public function tokens()
     {

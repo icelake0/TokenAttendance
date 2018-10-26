@@ -10,6 +10,6 @@ class Attendance extends Model
     	return $this->belongsToOne('App\Token','token_id');
     }
     public function student(){
-    	return $this->belongsToOne('App\Token','student_id');
+    	return $this->belongsTo('App\Token','student_id');
     }
 }
