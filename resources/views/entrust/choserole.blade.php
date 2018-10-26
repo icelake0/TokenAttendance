@@ -13,8 +13,8 @@
                 <form method='post' action='{{route("webauth.choserole")}}'>
                     @csrf
                     <div class="radio radio-info">
-                        <input type="radio" name="role" id="radio5" value="teacher" required>
-                        <label for="radio5"> Teacher </label><br>
+                        <input type="radio" name="role" id="radio5" value="lecturer" required>
+                        <label for="radio5"> Lecturer </label><br>
                         Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary 
                     </div>
                     <div class="radio radio-info">

@@ -25,7 +25,7 @@ class EntrustController extends Controller
 		    $user=Auth::user();
 		    $user->attachRole($role);
 		    return redirect()->route('home')
-                 ->with('success' , 'Your role is set, you can now explore other featurs');
+                 ->with('success' , 'Your role is set, you May now explore other featurs');
 		}
 		return view('entrust.choserole');
     }
