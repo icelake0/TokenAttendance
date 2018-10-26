@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<?php $page_title='upload document'; ?>
+<?php $page_title='Student Add Basic Informations'; ?>
 <div class="col-md-3 col-xs-0">
 </div>
 <div class="col-md-6 col-sm-12">

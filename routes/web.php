@@ -48,7 +48,10 @@ Route::group(['middleware'=>['auth']], function(){
 	Route::group(['middleware'=>['role:superadmin|admin']], function(){
 		Route::match(['get', 'post'],'/teacherrequest/{teacherRequest}/assignteacher', 'TeacherRequestsController@assignTeacher')->name('teacherrequest.assignteacher');
 	});
-
+	//routes accessable by lecturers only
+	Route::group(['middleware'=>['role:lecturer']], function(){
+		Route::resource('courses', 'CoursesController');
+	});
 	Route::group(['middleware'=>['role:teacher']], function(){
 		Route::match(['get', 'post'],'webauth/addsubjects','EntrustController@addSubjects')->name('webauth.addsubjects');
 	});
