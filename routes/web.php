@@ -53,6 +53,11 @@ Route::group(['middleware'=>['auth']], function(){
 		Route::resource('courses', 'CoursesController');
 		Route::match(['get', 'post'],'/courses/{course}/addlecturers', 'CoursesController@addLecturers')->name('courses.addlecturers');
 	});
+	//routes accessable by students only
+	Route::group(['middleware'=>['role:student']], function(){
+		Route::match(['get', 'post'],'/students/findcourse', 'StudentsController@findCourse')->name('students.findcourse');
+	});
+
 	Route::group(['middleware'=>['role:teacher']], function(){
 		Route::match(['get', 'post'],'webauth/addsubjects','EntrustController@addSubjects')->name('webauth.addsubjects');
 	});

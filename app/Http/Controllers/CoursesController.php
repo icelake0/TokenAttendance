@@ -128,6 +128,14 @@ class CoursesController extends Controller
             ]);
         }
     }
+    public function studentRegister(Request $request, Course $course){
+        if($request->isMethod('post')){
+            dd($request);
+        }else{
+            return view('course.studentRegister',['course'=>$course]);
+        }
+
+    }
 
     /**
      * Remove the specified resource from storage.

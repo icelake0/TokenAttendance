@@ -18,7 +18,7 @@
                             <input type="text" class="form-control" placeholder="Registration Number" name="reg_number" required>
                         </div>
                     </div>
-                    <button class="btn btn-block btn-info btn-lg btn-rounded">Upload</button>
+                    <button class="btn btn-block btn-info btn-lg btn-rounded">Submit</button>
                 </form>
             </div>
         </div>
