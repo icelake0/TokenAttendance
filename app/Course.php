@@ -7,7 +7,7 @@ use App\Lecturer;
 
 class Course extends Model
 {
-	public function courses(){
+	public function lecturers(){
         return $this->belongsToMany('App\Lecturer','course_lecturer','course_id','lecturer_id');
     }
     private function course_lecturer(){

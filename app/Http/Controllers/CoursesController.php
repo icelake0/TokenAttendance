@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Course;
 use Illuminate\Http\Request;
 use Auth;
+use App\User;
+use App\Lecturer;
 
 class CoursesController extends Controller
 {
@@ -87,6 +89,44 @@ class CoursesController extends Controller
     public function update(Request $request, Course $course)
     {
         //
+    }
+    public function addlecturers(Request $request, Course $course){
+        if($course->created_by!==Auth::user()->lecturer->id){
+            return back()->with('error','Your Can Only Add lectures to your courses ie. The courses you created');
+        }
+        if($request->isMethod('post')){
+            $errors=[];
+            $lecturer_ids=[];
+            $lecturer_emails=$request['lecturers'];
+            foreach($lecturer_emails as $lecturer_email){
+                $user=User::where('email',$lecturer_email)->first();
+                if(!$user){
+                    array_push($errors,$lecturer_email." is not a valid user's email");
+                }else{
+                    $lecturer=$user->lecturer;
+                    if(!$lecturer){
+                        array_push($errors,$lecturer_email." is not a valid lecturer's email");
+                    }else{
+                        array_push($lecturer_ids,$lecturer->id);
+                    }
+                }
+            }
+            if(count($errors) != 0){
+                return back()->with('errors',$errors);
+            }else{
+                $synced=$course->lecturers()->syncWithoutDetaching($lecturer_ids);
+                if(!$synced){
+                    return back()->with('error', 'Unable to add lecturers to course please check your input and try again');
+                }else{
+                    return redirect(route('courses.show',['course'=>$course->id]))->with('success','lecturers added to course');
+                }
+                //return to the course view page
+            }
+        }else{
+            return view('courses.addlecturers',[
+                'course'=>$course
+            ]);
+        }
     }
 
     /**

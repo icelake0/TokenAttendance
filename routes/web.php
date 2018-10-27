@@ -51,6 +51,7 @@ Route::group(['middleware'=>['auth']], function(){
 	//routes accessable by lecturers only
 	Route::group(['middleware'=>['role:lecturer']], function(){
 		Route::resource('courses', 'CoursesController');
+		Route::match(['get', 'post'],'/courses/{course}/addlecturers', 'CoursesController@addLecturers')->name('courses.addlecturers');
 	});
 	Route::group(['middleware'=>['role:teacher']], function(){
 		Route::match(['get', 'post'],'webauth/addsubjects','EntrustController@addSubjects')->name('webauth.addsubjects');

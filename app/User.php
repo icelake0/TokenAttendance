@@ -28,10 +28,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
     public function lecturer(){
-        return $this->hasOne('App\Lecturer','user_id');;
+        return $this->hasOne('App\Lecturer','user_id');
     }
     public function student(){
-        return $this->hasOne('App\Student','user_id');;
+        return $this->hasOne('App\Student','user_id');
     }
     public function subjects(){
         return $this->belongsToMany('App\Subject','teacher_subject','teacher_id','subject_id');
@@ -49,6 +49,6 @@ class User extends Authenticatable
         return $this->hasMany('App\TeacherDocument','teacher_id');
     }
     public function children(){
-        return $this->hasMany('App\Child','parent_id');;
+        return $this->hasMany('App\Child','parent_id');
     }
 }
