@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Auth;
 use App\User;
 use App\Lecturer;
+use App\Classe;
+use App\Token;
 
 class CoursesController extends Controller
 {
@@ -141,6 +143,41 @@ class CoursesController extends Controller
             }
         }else{
             return view('courses.studentRegister',['course'=>$course]);
+        }
+
+    }
+    public function createClasse(Course $course, Request $request){
+        $lecturer=Auth::user()->lecturer;
+        if(!$course->lecturers->contains($lecturer->id)){
+            dd('heloo');
+            return back()->withInput()->with('error','You are not a member of this course team, inform the course lecturer to add you as a member to be able to create a class for the course');
+        }
+        if($request->isMethod('post')){
+            $duplicate_classe=Classe::where('course_id',$course->id)->where('date',$request['date'])->where('time',$request['time'])->first();
+            if($duplicate_classe){
+                return back()->withInput()->with('error','You have already created a class at same date and time for this course');
+            }
+            $classe= new Classe();
+            $classe->course_id=$course->id;
+            $classe->created_by=$lecturer->id;
+            $classe->date=$request['date'];
+            $classe->time=$request['time'];
+            if($classe->save()){
+                //gen tokens
+                for($i=1; $i<=$request['no_of_token']; $i++){
+                    $token= new Token();
+                    $token->class_id=$classe->id;
+                    $token->setToken();
+                    $token->save();
+                }
+                return redirect(route('courses.show',['course'=>$course->id]));
+            }else{
+                return back()->withInput()->with('error','Something went wrong please try again');
+            }
+        }else{
+            return view('courses.createClasse',[
+                'course'=>$course
+            ]);
         }
 
     }

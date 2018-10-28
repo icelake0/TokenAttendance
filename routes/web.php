@@ -52,6 +52,7 @@ Route::group(['middleware'=>['auth']], function(){
 	Route::group(['middleware'=>['role:lecturer']], function(){
 		Route::resource('courses', 'CoursesController');
 		Route::match(['get', 'post'],'/courses/{course}/addlecturers', 'CoursesController@addLecturers')->name('courses.addlecturers');
+		Route::match(['get', 'post'],'/courses/{course}/createclasse', 'CoursesController@createClasse')->name('courses.createclasse');
 	});
 	//routes accessable by students only
 	Route::group(['middleware'=>['role:student']], function(){
