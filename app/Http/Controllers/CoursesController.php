@@ -130,9 +130,17 @@ class CoursesController extends Controller
     }
     public function studentRegister(Request $request, Course $course){
         if($request->isMethod('post')){
-            dd($request);
+            $student=Auth::user()->student;
+             if($student->courses->contains($course->id)){
+                return back()->withInput()->with('error','You Have Already Registered for this course');
+            }elseif($course->reg_key!==$request['reg_key']){
+                return back()->withInput()->with('error','Invalid Registration Key, Please confirm the correct Registration Key from the course lecturer');
+           }else{
+                $course->students()->attach(Auth::user()->student->id);
+                return redirect(route('courses.show',['course'=>$course->id]));
+            }
         }else{
-            return view('course.studentRegister',['course'=>$course]);
+            return view('courses.studentRegister',['course'=>$course]);
         }
 
     }

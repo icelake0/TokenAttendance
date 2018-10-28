@@ -56,6 +56,7 @@ Route::group(['middleware'=>['auth']], function(){
 	//routes accessable by students only
 	Route::group(['middleware'=>['role:student']], function(){
 		Route::match(['get', 'post'],'/students/findcourse', 'StudentsController@findCourse')->name('students.findcourse');
+		Route::match(['get', 'post'],'/courses/{course}/studentregister', 'CoursesController@studentRegister')->name('courses.studentregister');
 	});
 
 	Route::group(['middleware'=>['role:teacher']], function(){

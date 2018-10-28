@@ -33,7 +33,7 @@
                       	{{$course->course_lecturer()->title.' '.$course->course_lecturer()->user->name}}
                       </td>
                       <td class="text-center">
-                          <a class="btn btn-sm btn-info" href="{{route('courses.studentregister'),['course'=>$course->id]}}"><i class="fa fa-plus"></i> Register</a>
+                          <a class="btn btn-sm btn-info" href="{{route('courses.studentregister',['course'=>$course->id])}}"><i class="fa fa-plus"></i> Register</a>
                       </td>
                     </tr>
                     @endforeach
