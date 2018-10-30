@@ -58,6 +58,7 @@ Route::group(['middleware'=>['auth']], function(){
 	Route::group(['middleware'=>['role:student']], function(){
 		Route::match(['get', 'post'],'/students/findcourse', 'StudentsController@findCourse')->name('students.findcourse');
 		Route::match(['get', 'post'],'/courses/{course}/studentregister', 'CoursesController@studentRegister')->name('courses.studentregister');
+		Route::match(['get', 'post'],'/students/classe/{classe}/takeattendance', 'StudentsController@takeAttendance')->name('students.takeattendance');
 	});
 
 	Route::group(['middleware'=>['role:teacher']], function(){
