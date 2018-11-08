@@ -2,7 +2,7 @@
 
 @section('content')
 <?php $page_title='manage users'; ?>
-<link href="{{asset('css/jquery.fancybox.min.css')}}" rel="stylesheet"
+<link href="{{asset('css/jquery.fancybox.min.css')}}" rel="stylesheet">
   <div class="col-sm-12">
     <div class="white-box">
         <h3 class="box-title m-b-0">System Users</h3>

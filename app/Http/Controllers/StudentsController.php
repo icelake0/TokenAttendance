@@ -33,7 +33,7 @@ class StudentsController extends Controller
     public function takeAttendance(Request $request, Classe $classe){
         //do some checks to be sure the student is a member of the class;
         $student=Auth::User()->student;
-        is student for the clsse?
+        //is student for the clsse?
         if(!$student->courses->contains($classe->course->id)){
             return back()->with('error','You are not registered for this course');
         }

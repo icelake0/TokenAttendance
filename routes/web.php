@@ -53,6 +53,12 @@ Route::group(['middleware'=>['auth']], function(){
 		Route::resource('courses', 'CoursesController');
 		Route::match(['get', 'post'],'/courses/{course}/addlecturers', 'CoursesController@addLecturers')->name('courses.addlecturers');
 		Route::match(['get', 'post'],'/courses/{course}/createclasse', 'CoursesController@createClasse')->name('courses.createclasse');
+		Route::get('/courses/classe/{classe}/printTokens', 'CoursesController@printTokens')->name('courses.printtokens');
+		Route::get('/courses/{course}/classes', 'CoursesController@classes')->name('courses.classes');
+		Route::get('/courses/{course}/attendance', 'CoursesController@attendance')->name('courses.attendance');
+		Route::get('/courses/{course}/printattendance', 'CoursesController@printAttendance')->name('courses.printattendance');
+		Route::get('/courses/classes/{classe}/attendance', 'CoursesController@classeAttendance')->name('courses.classes.attendance');
+		Route::get('/courses/classes/{classe}/printattendance', 'CoursesController@printClasseAttendance')->name('courses.classes.printattendance');
 	});
 	//routes accessable by students only
 	Route::group(['middleware'=>['role:student']], function(){

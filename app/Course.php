@@ -18,6 +18,6 @@ class Course extends Model
     }
     public function classes()
     {
-        return $this->hasMany('App\Class','course_id');
+        return $this->hasMany('App\Classe','course_id');
     }
 }

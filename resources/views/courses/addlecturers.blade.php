@@ -10,7 +10,7 @@
         <p class="text-muted m-b-30 font-13">Provide a valid email of an already registered lecturer to give the lecturer access to this course.</p>
         <div class="row">
             <div class="col-sm-12 col-xs-12">
-            	//please give details of the course lecturers are being added to
+            	@include('partials.courseinfo',['course'=>$course])
                 <form method='post' action='{{ route("courses.addlecturers",["course"=>$course->id]) }}'>
                     @csrf
                     <div class="form-group">
@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     </span>
-                   	 <button class="btn btn-block btn-info btn-lg btn-rounded">Submit</button>
+                   	 <button class="btn btn-block btn-info btn-lg btn-rounded">Add Lecturers</button>
                 </form>
             </div>
         </div>

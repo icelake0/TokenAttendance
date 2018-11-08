@@ -10,7 +10,7 @@
         <p class="text-muted m-b-30 font-13">Create a class and generate tokens for student, You can select the number of tokens to generate</p>
         <div class="row">
             <div class="col-sm-12 col-xs-12">
-            	//kindly put information of the course being registered here
+            	@include('partials.courseinfo',['course'=>$course])
                 <form method='post' class="form-horizontal" action="{{ route('courses.createclasse',['course'=>$course->id]) }}">
                     @csrf
                     <div class="form-group">

@@ -9,7 +9,8 @@ use App\User;
 use App\Lecturer;
 use App\Classe;
 use App\Token;
-
+use PDF;
+use App;
 class CoursesController extends Controller
 {
     /**
@@ -19,8 +20,15 @@ class CoursesController extends Controller
      */
     public function index()
     {
-        $courses=Auth::user()->lecturer->courses;
-        dd($courses);
+        $user=Auth::user();
+        if($user->hasRole('lecturer')){
+            $courses=$user->lecturer->courses;
+        }elseif($user->hasRole('student')){
+            $courses=$user->student->courses;
+        }
+        return view('courses.index',[
+            'courses'=>$courses
+        ]);
     }
 
     /**
@@ -78,7 +86,7 @@ class CoursesController extends Controller
      */
     public function edit(Course $course)
     {
-        //
+        dd('This is the edit page for course');
     }
 
     /**
@@ -181,7 +189,87 @@ class CoursesController extends Controller
         }
 
     }
+    public function printTokens(Request $request, Classe $classe){
+        ini_set('max_execution_time', 300);
+        ini_set("memory_limit","512M");
+        $tokens=$classe->tokens;
+        // $tokens=$tokens->map(function($token){
+        //     return $token->token;
+        // });
+        //$tokens=$tokens->toArray();
+        $html = view('pdfs.tokens',[
+                        'tokens'=>$tokens,
+                        'classe'=>$classe,
+                    ])->render();
+        $pdf = App::make('dompdf.wrapper');
+       
+        $pdf->loadHTML($html);
+        return $pdf->stream();
+    }
+    public function classes(Course $course){
+        $classes=$course->classes;
+        return view('courses.classes',[
+            'course'=>$course,
+            'classes'=>$classes
+        ]);
+    }
+    public function attendance(Course $course){
+        ini_set('max_execution_time', 300);
+        ini_set("memory_limit","512M");
+        $attendance_prep=$this->prepAttendance($course);
+        return view('courses.attendance',$attendance_prep);
+    }
+    public function printAttendance(Course $course){
+        $attendance_prep=$this->prepAttendance($course);
+        $html = view('pdfs.courseAttendance',$attendance_prep)->render();
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML($html);
+        return $pdf->stream();
+    }
+    public function prepAttendance(Course $course){
+        $course_tokens=[];
+        $classes=$course->classes;
+        $classes->each(function($classe,$key) use (&$course_tokens){
+            $classe->tokens=$classe->tokens->map(function($token){
+                return $token->id;
+            })->toArray();
+            $course_tokens=array_merge($course_tokens,$classe->tokens);
+        });
+        $students=$course->students()->with(['attendances'=> function($query) use ($course_tokens){
+            $query->whereIn('token_id', $course_tokens);
+        }])->get();
+        //dd($students);
+        return [
+            'students'=>$students,
+            'classes'=>$classes,
+            'course'=>$course
+        ];
+    }
+    public function classeAttendance(Classe $classe){
+        $attendance_prep=$this->prepClasseAttendance($classe);
+        return view('courses.classeAttendance',$attendance_prep);
+    }
+    public function printClasseAttendance(Classe $classe){
+        $attendance_prep=$this->prepClasseAttendance($classe);
+        $html = view('pdfs.classeAttendance',$attendance_prep)->render();
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML($html);
+        return $pdf->stream();
+        // return view('pdf.classeAttendance');
+    }
+    public function prepClasseAttendance(Classe $classe){
+        $tokens=$classe->tokens->map(function($token){
+            return $token->id;
+        })->toArray();
+        $students=$classe->course->students()->with(['attendances'=> function($query) use ($tokens){
+            $query->whereIn('token_id', $tokens);
+        }])->get();
+        return [
+            'classe'=>$classe,
+            'students'=>$students
+        ];
 
+    }
     /**
      * Remove the specified resource from storage.
      *

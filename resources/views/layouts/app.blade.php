@@ -141,11 +141,12 @@
                 <ul class="nav" id="side-menu">
                     <li><a href="{{route('home')}}" class="waves-effect"><i data-icon="7" class="linea-icon icon-home  fa-fw"></i><span class="hide-menu">Home </span></a> </li>
                     <li><a href="{{route('profile',['user'=>Auth::user()->id])}}" class="waves-effect "><i data-icon="7" class="linea-icon icon-user fa-fw"></i><span class="hide-menu">Profile </span></a> </li>
-                    <li><a href="{{route('teacherrequest.create')}}" class="waves-effect"><i data-icon="7" class="linea-icon icon-plus fa-fw"></i><span class="hide-menu">New Request</span></a> </li>
-                    <li><a href="{{route('webauth.addchildren')}}" class="waves-effect"><i data-icon="7" class="linea-icon icon-people fa-fw"></i><span class="hide-menu">Add Children</span></a> </li>
-                    <li><a href="{{route('webauth.addsubjects')}}" class="waves-effect"><i data-icon="7" class="linea-icon icon-briefcase fa-fw"></i><span class="hide-menu">Add Skills/Subjects</span></a> </li>
-                    <li><a href="{{route('uploadDocument')}}" class="waves-effect"><i data-icon="7" class="linea-icon icon-docs fa-fw"></i><span class="hide-menu">Upload Documents</span></a> </li>
-                    <li><a href="{{route('teacherrequest.index')}}" class="waves-effect"><i data-icon="7" class="linea-icon  icon-layers fa-fw"></i><span class="hide-menu">Teacher Requests</span></a> </li>
+                    <li>
+                        <a href="{{route('courses.index')}}" class="waves-effect "><i data-icon="7" class="linea-icon fa fa-table fa-fw"></i><span class="hide-menu">Courses</span></a>
+                    </li>
+                    <li>
+                        <a href="{{route('courses.create')}}" class="waves-effect "><i data-icon="7" class="fa fa-plus fa-fw"></i><span class="hide-menu">New Course </span></a>
+                    </li>
                     <li><a href="{{route('webauth.manageusers')}}" class="waves-effect"><i data-icon="7" class="linea-icon fa fa-users fa-fw"></i><span class="hide-menu">Manage Users</span></a> </li>
                     <li><a href='{{route("logout")}}' onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="waves-effect"><i class="mdi mdi-logout fa-fw"></i> <span class="hide-menu">Log out</span></a></li>
                 </ul>
