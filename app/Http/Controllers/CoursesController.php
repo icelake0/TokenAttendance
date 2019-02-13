@@ -75,7 +75,9 @@ class CoursesController extends Controller
      */
     public function show(Course $course)
     {
-        dd($course);
+        return view('courses.show',[
+            'course'=>$course
+        ]);
     }
 
     /**
@@ -86,7 +88,7 @@ class CoursesController extends Controller
      */
     public function edit(Course $course)
     {
-        dd('This is the edit page for course');
+        return view('courses.edit',['course'=>$course]);
     }
 
     /**
@@ -98,7 +100,28 @@ class CoursesController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        //
+        $updated=Course::where('id',$course->id)->update([
+              "title" => $request["title"],
+              "code" => $request["code"],
+              "unit" => $request["unit"],
+              "section" => $request["section"],
+              "semester" => $request["semester"],
+              "reg_key" => $request["reg_key"]
+        ]);
+        if($updated){
+           return redirect()->route('courses.show', ['course'=> $course->id])
+            ->with('success' , 'Course update success');
+        }else{
+            return back()->withInput()->with('error','Something went wrong, review your inputs and try again');
+        }
+    }
+    public function updateClasse(Classe $classe){
+        dd($classe);
+    }
+    public function showClasse(Classe $classe){
+        return view('courses.showClasse',[
+            'classe'=>$classe
+        ]);
     }
     public function addlecturers(Request $request, Course $course){
         if($course->created_by!==Auth::user()->lecturer->id){
@@ -157,7 +180,6 @@ class CoursesController extends Controller
     public function createClasse(Course $course, Request $request){
         $lecturer=Auth::user()->lecturer;
         if(!$course->lecturers->contains($lecturer->id)){
-            dd('heloo');
             return back()->withInput()->with('error','You are not a member of this course team, inform the course lecturer to add you as a member to be able to create a class for the course');
         }
         if($request->isMethod('post')){
@@ -268,7 +290,6 @@ class CoursesController extends Controller
             'classe'=>$classe,
             'students'=>$students
         ];
-
     }
     /**
      * Remove the specified resource from storage.

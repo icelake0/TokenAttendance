@@ -13,7 +13,7 @@
                 <form method='post' class="form-horizontal" action='{{ route("students.findcourse") }}'>
                     @csrf
                     <div class="form-group">
-                        <label class="col-sm-12">Section</label>
+                        <label class="col-sm-12">Session</label>
                         <div class="col-sm-12">
                             <input type="text" class="form-control" placeholder="Section" name="section" required>
                         </div>
@@ -21,7 +21,11 @@
                     <div class="form-group">
                         <label class="col-sm-12">Semester</label>
                         <div class="col-sm-12">
-                            <input type="number" class="form-control" placeholder="semester" name="semester" required>
+                            <select class="form-control" name="semester" required>
+                                <option disabled="" selected="" readonly>--Select Semester--</option>
+                                <option value=1>First Semester</option>
+                                <option value=2>Second Semester</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
